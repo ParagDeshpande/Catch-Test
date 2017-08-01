@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
         initViews();
     }
 
+    // Initialise all the views and methods
+
     private void initViews() {
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         mRecyclerView.setHasFixedSize(true);
@@ -48,20 +50,30 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    // Perform actions on Refresh to load data into the list
+
     public void refreshPage() {
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swiperefresh);
         mSwipeRefreshLayout.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        new GetContacts().execute();
+                        new GetContent().execute();
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
                 }
         );
     }
 
-    private class GetContacts extends AsyncTask<Void, Void, Void> {
+    // Asynchronously download the data into the list
+
+    // Important: Lazy Loading can also be done on the data if it had images
+    // As all the data is in text format and is taking 1 second to load normal
+    // AsyncTask is performed on the JSON object
+
+    private class GetContent extends AsyncTask<Void, Void, Void> {
+
+        // This will run on UI thread
 
         @Override
         protected void onPreExecute() {
@@ -70,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
             pDialog.setMessage("Please wait...");
             pDialog.setCancelable(false);
             pDialog.show();
-
         }
+
+        // This will run on Background thread
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -79,10 +92,14 @@ public class MainActivity extends AppCompatActivity {
             String url = "https://raw.githubusercontent.com/catchnz/android-test/master/data/data.json";
             String jsonStr = sh.makeServiceCall(url);
 
+            // Parse the JSON Data
+
             JSONResponse jr = new JSONResponse();
             results = jr.parseJSON(jsonStr);
             return null;
         }
+
+        // After loading the data disable progress dialog and render the data
 
         @Override
         protected void onPostExecute(Void result) {
@@ -97,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
             setClickListener();
         }
     }
+
+    // Setting onClickListener() on the Recycler View
 
     private void setClickListener() {
         ((RecyclerViewAdapter) mAdapter).setOnItemClickListener(new RecyclerViewAdapter

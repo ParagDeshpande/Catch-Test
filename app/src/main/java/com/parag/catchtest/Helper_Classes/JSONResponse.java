@@ -1,8 +1,6 @@
 package com.parag.catchtest.Helper_Classes;
 
 import android.util.Log;
-import android.widget.Toast;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +12,8 @@ import java.util.ArrayList;
  */
 
 public class JSONResponse {
-    public static ArrayList results;
-    String jsonStr;
+
+    public static ArrayList results; // Made 'public static' for global access of unique data
     DataObject obj;
 
     public ArrayList parseJSON(String jsonStr) {

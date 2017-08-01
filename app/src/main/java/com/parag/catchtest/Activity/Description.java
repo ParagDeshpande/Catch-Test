@@ -20,17 +20,19 @@ public class Description extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_description);
 
+        // Checking the bundle data content
+
         Bundle extras = getIntent().getExtras();
-
-
         if (extras != null) {
             id = extras.getInt("id");
         }
 
         TextView description = (TextView) findViewById(R.id.description);
-        description.setText(String.valueOf(id));
 
-//        JSONResponse jr = new JSONResponse();
+        // Important:
+        // Results is made static so that only 1 instance is created and its value will be the
+        // same throughout the application.
+
         results = JSONResponse.results;
         DataObject obj = (DataObject) results.get(id);
         String content = obj.getContent();
